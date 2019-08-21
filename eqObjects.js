@@ -20,18 +20,18 @@ const eqArrays = function(array1, array2) {
   return isTrue;
 };
 
-const eqObjects = function(actualObject, expectedObject) {
+const eqObjects = function(object1, object2) {
   let result = false;
-  if (Object.keys(actualObject).length === Object.keys(expectedObject).length) {
-    for (const key in actualObject) {
-      if (!Array.isArray(actualObject[key])) {
-        if(actualObject[key] === expectedObject[key]) {
+  if (Object.keys(object1).length === Object.keys(object2).length) {
+    for (const key in object1) {
+      if (!Array.isArray(object1[key])) {
+        if(object1[key] === object2[key]) {
           result = true;
         } else {
           result = false;
         }
       } else {
-        result = eqArrays(actualObject[key], expectedObject[key]);
+        result = eqArrays(object1[key], object2[key]);
       }
     }
   }
