@@ -8,13 +8,13 @@ const assertEqual = function(actual, expected) {
 
 const countLetters = function(sentence) {
   const result = {};
-  const sentenceInLetters = sentence.split('');
-  for (letter of sentenceInLetters) {
+  const sentenceInLetters = sentence.toLowerCase().split('');
+  for (const letter of sentenceInLetters) {
     if (letter !== " ") {
       if (result[letter]) {
         result[letter] += 1;
       } else {
-       result[letter] = 1;
+        result[letter] = 1;
       }
     }
   }
