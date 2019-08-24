@@ -20,15 +20,39 @@ const eqArrays = function(array1, array2) {
   return isTrue;
 };
 
+// const eqObjects = function(object1, object2) {
+//   let result = false;
+//   if (Object.keys(object1).length === Object.keys(object2).length) {
+//     for (const key in object1) {
+//       if (!Array.isArray(object1[key])) {
+//         if (object1[key] === object2[key]) {
+//           result = true;
+//         } else {
+//           result = false;
+//         }
+//       } else {
+//         result = eqArrays(object1[key], object2[key]);
+//       }
+//     }
+//   }
+//   return result;
+// };
+
+//Recursion
 const eqObjects = function(object1, object2) {
   let result = false;
   if (Object.keys(object1).length === Object.keys(object2).length) {
     for (const key in object1) {
       if (!Array.isArray(object1[key])) {
-        if (object1[key] === object2[key]) {
-          result = true;
+        if (typeof object1[key] === 'object') {
+          result = eqObjects(object1[key], object2[key]);  //checking for nested objects
         } else {
-          result = false;
+          
+          if (object1[key] === object2[key]) {
+            result = true;
+          } else {
+            result = false;
+          }
         }
       } else {
         result = eqArrays(object1[key], object2[key]);
@@ -46,11 +70,22 @@ const result2 = eqObjects(ab, abc); // => false
 assertEqual(result1, true);
 assertEqual(result2, false);
 
-const cd = { c: "1", d: ["2", 3] };
-const dc = { d: ["2", 3], c: "1" };
+// const cd = { c: "1", d: ["2", 3] };
+// const dc = { d: ["2", 3], c: "1" };
+// const cd2 = { c: "1", d: ["2", 3, 4] };
+// const result3 = eqObjects(cd, dc); // => true
+// const result4 = eqObjects(cd, cd2); // => false
+
+// assertEqual(result3, true);
+// assertEqual(result4, false);
+
+//test for objects inside objects
+const cd = { c: "1", d: ["2", 3], c: {a: 1, b: 2}};
+const dc = { c: "1", d: ["2", 3], c: {a: 1, b: 2}};
 const cd2 = { c: "1", d: ["2", 3, 4] };
 const result3 = eqObjects(cd, dc); // => true
 const result4 = eqObjects(cd, cd2); // => false
 
 assertEqual(result3, true);
 assertEqual(result4, false);
+
