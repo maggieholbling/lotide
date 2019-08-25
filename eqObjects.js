@@ -1,91 +1,29 @@
-const assertEqual = function(actual, expected) {
-  if (actual === expected) {
-    console.log(`✅Assertion Passed: ${actual} === ${expected}`);
-  } else {
-    console.log(`🤕Assertion Failed: ${actual} !== ${expected}`);
-  }
-};
+const assertEqual = require('./assertEqual');
 
-const eqArrays = function(array1, array2) {
-  let isTrue = false;
-  if (array1.length === array2.length) {//check if arrays are equal length
-    for (let i = 0; i < array1.length; i++) {//loop for the length of array1
-      if (array1[i] !== array2[i]) {//compare first and last elements
-        return false;
-      } else {
-        isTrue = true;
-      }
-    }
-  }
-  return isTrue;
-};
+const eqArrays = require('./eqArrays');
 
-// const eqObjects = function(object1, object2) {
-//   let result = false;
-//   if (Object.keys(object1).length === Object.keys(object2).length) {
-//     for (const key in object1) {
-//       if (!Array.isArray(object1[key])) {
-//         if (object1[key] === object2[key]) {
-//           result = true;
-//         } else {
-//           result = false;
-//         }
-//       } else {
-//         result = eqArrays(object1[key], object2[key]);
-//       }
-//     }
-//   }
-//   return result;
-// };
-
-//Recursion
 const eqObjects = function(object1, object2) {
-  let result = false;
-  if (Object.keys(object1).length === Object.keys(object2).length) {
-    for (const key in object1) {
-      if (!Array.isArray(object1[key])) {
-        if (typeof object1[key] === 'object') {
-          result = eqObjects(object1[key], object2[key]);  //checking for nested objects
-        } else {
-          
-          if (object1[key] === object2[key]) {
-            result = true;
-          } else {
-            result = false;
-          }
-        }
-      } else {
-        result = eqArrays(object1[key], object2[key]);
-      }
-    }
+
+  if (typeof object1 !== 'object' || typeof object2 !== 'object') return false;
+  
+  if (Object.keys(object1).length !== Object.keys(object2).length) return false;
+  
+  for (const key in object1) {
+
+    if (Array.isArray(object1[key])) return eqArrays(object1[key], object2[key]);
+
+    if (typeof object1[key] === 'object') { //checking for nested objects
+
+      if (!eqObjects(object1[key], object2[key])) return false;
+
+    } else if (object1[key] !== object2[key]) return false;
+
   }
-  return result;
+  return true;
 };
 
-const ab = { a: "1", b: "2" };
-const ba = { b: "2", a: "1" };
-const abc = { a: "1", b: "2", c: "3" };
-const result1 = eqObjects(ab, ba); // => true
-const result2 = eqObjects(ab, abc); // => false
-assertEqual(result1, true);
-assertEqual(result2, false);
+module.exports = eqObjects;
 
-// const cd = { c: "1", d: ["2", 3] };
-// const dc = { d: ["2", 3], c: "1" };
-// const cd2 = { c: "1", d: ["2", 3, 4] };
-// const result3 = eqObjects(cd, dc); // => true
-// const result4 = eqObjects(cd, cd2); // => false
-
-// assertEqual(result3, true);
-// assertEqual(result4, false);
-
-//test for objects inside objects
-const cd = { c: "1", d: ["2", 3], c: {a: 1, b: 2}};
-const dc = { c: "1", d: ["2", 3], c: {a: 1, b: 2}};
-const cd2 = { c: "1", d: ["2", 3, 4] };
-const result3 = eqObjects(cd, dc); // => true
-const result4 = eqObjects(cd, cd2); // => false
-
-assertEqual(result3, true);
-assertEqual(result4, false);
-
+assertEqual(eqObjects({ a: { z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 }), true) // => true
+assertEqual(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: { z: 1 }, b: 2 }), false) // => false
+assertEqual(eqObjects({ a: { y: 0, z: 1 }, b: 2 }, { a: 1, b: 2 }), false) // => false
