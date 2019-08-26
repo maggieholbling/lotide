@@ -3,7 +3,6 @@
 const findKey = function(object, callback) {
   let result;
   for (const key in object) {
-    //console.log(callback(object[key]));
     if (callback(object[key])) {
       result = key;
       break;
