@@ -1,4 +1,4 @@
-const assertEqual = require('./assertEqual');
+//const assertEqual = require('./assertEqual');
 
 const countLetters = function(sentence) {
   const result = {};
@@ -15,8 +15,10 @@ const countLetters = function(sentence) {
   return result;
 };
 
-const resultFromFunction = countLetters("This is a sample sentence");
-assertEqual(resultFromFunction["t"], 2);
-assertEqual(resultFromFunction["h"], 1);
-assertEqual(resultFromFunction["x"], undefined);
-assertEqual(resultFromFunction["e"], 4);
+module.exports = countLetters;
+
+// const resultFromFunction = countLetters("This is a sample sentence");
+// assertEqual(resultFromFunction["t"], 2);
+// assertEqual(resultFromFunction["h"], 1);
+// assertEqual(resultFromFunction["x"], undefined);
+// assertEqual(resultFromFunction["e"], 4);
