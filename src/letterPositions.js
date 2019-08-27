@@ -1,5 +1,3 @@
-//const assertArraysEqual = require('./assertArraysEqual');
-
 const letterPositions = function(sentence) {
   const result = {};
   const sentenceInLetters = sentence.toLowerCase().split('');
@@ -17,9 +15,3 @@ const letterPositions = function(sentence) {
 };
 
 module.exports = letterPositions;
-
-// const resultFromFunction = letterPositions("Sample sEntence");
-// //const resultFromFunction = letterPositions("lighthouse in the house");
-// console.log(resultFromFunction["t"]);
-// assertArraysEqual(resultFromFunction["t"], [10]);
-// assertArraysEqual(resultFromFunction["e"], [ 5, 8, 11, 14 ]);
